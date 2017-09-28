@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Users</h2>
+    <h2>Search for a song</h2>
     <div>
       <input type="text" v-model="input_val" @change='getVideos()'>
     </div>
@@ -27,11 +27,6 @@ export default {
   data () {
     return {
       msg: 'Welcome to Karaokleiton',
-      users: [
-        {firstname: 'Sebastian', lastname: 'Eschweiler'},
-        {firstname: 'Bill', lastname: 'Smith'},
-        {firstname: 'John', lastname: 'Porter'}
-      ],
       videos: [],
       input_val: ''
     }
@@ -44,8 +39,7 @@ export default {
 
       axios.get(url)
         .then(response => {
-        this.videos = this.videos.concat(response.data.items)
-          console.log(response.data.items[0].id.videoId)
+        this.videos = response.data.items
         })
         .catch(error => {
           console.log(error)
