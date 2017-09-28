@@ -9,12 +9,10 @@
     <p>Searching for: {{input_val}} karaoke</p>
     <ul>
       <li v-for="video in videos">
-        <!-- <a href="http://youtube.com/watch?v={{video.videoId}}"> -->
-        <!--   <img src="{{video.snippet.thumbnails.default.url}}" alt="image"> -->
-        <!-- </a> -->
-        id: {{video.id.videoId}}
-        image: {{video.snippet.thumbnails.default.url}}
-        name: {{video.snippet.title}}
+        <a :href="'http://youtube.com/watch?v='+video.id.videoId">
+          <img :src="video.snippet.thumbnails.default.url" alt="image">
+          <p>name: {{video.snippet.title}}</p>
+        </a>
       </li>
     </ul>
   </div>
@@ -39,7 +37,7 @@ export default {
 
       axios.get(url)
         .then(response => {
-        this.videos = response.data.items
+          this.videos = response.data.items
         })
         .catch(error => {
           console.log(error)
