@@ -2,21 +2,26 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h2>Users</h2>
-    <ul>
-      <li v-for="user in users">
-        {{user.firstname}} {{user.lastname}}
-      </li>
-    </ul>
     <div>
-      <input type="text" v-model="input_val">
+      <input type="text" v-model="input_val" @change='getVideos()'>
     </div>
 
-    <p>{{input_val}} karaoke</p>
-    <p>Input value: <span v-text='input_val'></span></p>
+    <p>Searching for: {{input_val}} karaoke</p>
+    <ul>
+      <li v-for="video in videos">
+        <!-- <a href="http://youtube.com/watch?v={{video.videoId}}"> -->
+        <!--   <img src="{{video.snippet.thumbnails.default.url}}" alt="image"> -->
+        <!-- </a> -->
+        id: {{video.id.videoId}}
+        image: {{video.snippet.thumbnails.default.url}}
+        name: {{video.snippet.title}}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'hello',
   data () {
@@ -27,7 +32,24 @@ export default {
         {firstname: 'Bill', lastname: 'Smith'},
         {firstname: 'John', lastname: 'Porter'}
       ],
+      videos: [],
       input_val: ''
+    }
+  },
+
+  methods: {
+    getVideos(){
+      var url = "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
+      url = url + this.input_val + 'karaoke' + "&key=AIzaSyDNtvz2GHiQJga-12qTPbbysPcRehON7V0"
+
+      axios.get(url)
+        .then(response => {
+        this.videos = this.videos.concat(response.data.items)
+          console.log(response.data.items[0].id.videoId)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
